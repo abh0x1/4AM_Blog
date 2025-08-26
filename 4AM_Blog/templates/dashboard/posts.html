@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Categories | 4AM Blog{% endblock %}
+
+{% block content %}
+<div class="flex flex-col lg:flex-row max-w-6xl mx-auto mt-6 bg-white shadow rounded-lg overflow-hidden">
+
+  <!-- Sidebar (Left) -->
+  {% include "dashboard/sidebar.html" %}
+
+  <!-- Main Content (Middle) -->
+  <main class="flex-1 p-4 overflow-x-auto border-r border-gray-200">
+    <h1 class="text-2xl font-bold mb-4 text-gray-800 border-b pb-2">📂 All Categories</h1>
+    
+    {% if categories %}
+    <div class="overflow-x-auto">
+      <table class="table-auto min-w-full divide-y divide-gray-300 text-sm">
+        <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
+          <tr>
+            <th class="px-4 py-2 text-left whitespace-nowrap">S.No.</th>
+            <th class="px-4 py-2 text-left whitespace-nowrap">Title</th>
+            <th class="px-4 py-2 text-left whitespace-nowrap">Category</th>
+            <th class="px-4 py-2 text-left whitespace-nowrap">Author</th>
+            <th class="px-4 py-2 text-left whitespace-nowrap">Status</th>
+            <th class="px-4 py-2 text-center whitespace-nowrap">Featured</th>
+            <th class="px-4 py-2 text-left whitespace-nowrap">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="text-gray-700 divide-y divide-gray-200">
+          {% for post in posts %}
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-2">{{ forloop.counter }}</td>
+            <td class="px-4 py-2">{{ post.title }}</td>
+            <td class="px-4 py-2">{{ post.category }}</td>
+            <td class="px-4 py-2">{{ post.author }}</td>
+            <td class="px-4 py-2">{{ post.status }}</td>
+            <td class="px-4 py-2 text-center">
+              {% if post.is_featured %}
+                <i class="fa-solid fa-check text-green-500 text-lg"></i>
+              {% else %}
+                <i class="fa-solid fa-xmark text-red-500 text-lg"></i>
+              {% endif %}
+            </td>
+            <td class="px-4 py-2 space-x-3 flex">
+              <!-- Edit Icon -->
+              <a href="{% url 'edit_post' post.id %}" class="text-blue-600 hover:text-blue-800" title="Edit">
+                <i class="fa-solid fa-pen-to-square text-lg"></i>
+              </a>
+              <!-- Delete Icon -->
+              <a href="{% url 'delete_post' post.id %}" class="text-red-600 hover:text-red-800" title="Delete">
+                <i class="fa-solid fa-trash text-lg"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <p class="text-gray-500">No categories found.</p>
+    {% endif %}
+  </main>
+
+</div>
+{% endblock %}

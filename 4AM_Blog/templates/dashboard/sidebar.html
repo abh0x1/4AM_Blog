@@ -1,0 +1,50 @@
+<aside class="bg-gray-100 border-b border-gray-300 p-4 space-y-0 min-h-[50px] 
+            flex flex-wrap items-center gap-2 lg:flex-col lg:items-stretch lg:gap-3 lg:border-b-0 lg:border-r lg:w-64">
+
+  <h2 class="text-xl font-semibold mb-0 w-full lg:mb-2">Menu</h2>
+
+  <!-- Greeting -->
+  <a href="#" class="px-3 py-2 rounded hover:bg-yellow-300">
+    👋 Hello, {{ user.username }}
+  </a>
+
+  <!-- Dashboard -->
+  <a href="{% url 'dashboard' %}" 
+     class="px-3 py-2 rounded hover:bg-yellow-300 {% if request.path == '/dashboard/' %}bg-yellow-400 text-black{% endif %}">
+    🏠 Dashboard
+  </a>
+
+  <!-- Users -->
+  <a href="{% url 'users' %}" 
+     class="px-3 py-2 rounded hover:bg-yellow-300 {% if '/dashboard/users' in request.path %}bg-yellow-400 text-black{% endif %}">
+    👥 Users
+  </a>
+
+  <!-- Categories -->
+  <a href="{% url 'categories' %}" 
+     class="px-3 py-2 rounded hover:bg-yellow-300 {% if '/dashboard/categories/' in request.path and not '/dashboard/categories/add' in request.path %}bg-yellow-400 text-black{% endif %}">
+    📂 Categories
+  </a>
+
+  <!-- Add Category -->
+  <a href="{% url 'add_category' %}" 
+     class="px-3 py-2 rounded hover:bg-yellow-300 {% if '/dashboard/categories/add' in request.path %}bg-yellow-400 text-black{% endif %}">
+    ➕ Add Category
+  </a>
+
+  <!-- Add Post -->
+  <a href="{% url 'add_post' %}" class="px-3 py-2 rounded hover:bg-yellow-300">
+    🖊️ Add Post
+  </a>
+
+  <!-- Posts -->
+  <a href="{% url 'posts' %}" 
+     class="px-3 py-2 rounded hover:bg-yellow-300 {% if '/dashboard/posts' in request.path %}bg-yellow-400 text-black{% endif %}">
+    📰 Posts
+  </a>
+
+  <!-- Logout -->
+  <a href="{% url 'logout' %}" class="px-3 py-2 rounded hover:bg-yellow-300 text-red-600">
+    🚪 Logout
+  </a>
+</aside>

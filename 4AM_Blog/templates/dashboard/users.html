@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Users | 4AM Blog{% endblock %}
+
+{% block content %}
+<div class="flex flex-col lg:flex-row max-w-6xl mx-auto mt-6 bg-white shadow rounded-lg overflow-hidden">
+
+  <!-- Sidebar -->
+  {% include "dashboard/sidebar.html" %}
+
+  <!-- Main Content -->
+  <main class="flex-1 p-4 overflow-x-auto border-l border-gray-200">
+    <div class="flex justify-between items-center mb-4 border-b pb-2">
+      {% if perms.auth.view_user %}
+        <h1 class="text-2xl font-bold text-gray-800">👤 All Users</h1>
+        <a href="{% url 'add_user' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center gap-2">
+          <i class="fa-solid fa-user-plus"></i> Add User
+        </a>
+      {% else %}
+        <h1 class="text-2xl font-bold text-gray-800">Permission Denied</h1>
+      {% endif %}
+    </div>
+
+    {% if perms.auth.view_user %}
+      {% if users %}
+        <div class="overflow-x-auto">
+          <table class="table-auto min-w-full divide-y divide-gray-300 text-sm">
+            <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
+              <tr>
+                <th class="px-4 py-2 text-left whitespace-nowrap">S.No.</th>
+                <th class="px-4 py-2 text-left whitespace-nowrap">Full Name</th>
+                <th class="px-4 py-2 text-left whitespace-nowrap">Username</th>
+                <th class="px-4 py-2 text-left whitespace-nowrap">Email</th>
+                <th class="px-4 py-2 text-left whitespace-nowrap">Status</th>
+                <th class="px-4 py-2 text-center whitespace-nowrap">Staff</th>
+                <th class="px-4 py-2 text-center whitespace-nowrap">Superuser</th>
+                <th class="px-4 py-2 text-center whitespace-nowrap">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-700 divide-y divide-gray-200">
+              {% for user in users %}
+              <tr class="hover:bg-gray-50">
+                <td class="px-4 py-2">{{ forloop.counter }}</td>
+                <td class="px-4 py-2">{{ user.get_full_name }}</td>
+                <td class="px-4 py-2">{{ user.username }}</td>
+                <td class="px-4 py-2">{{ user.email }}</td>
+                <td class="px-4 py-2">
+                  {% if user.is_active %}
+                    <span class="text-green-600 font-semibold">Active</span>
+                  {% else %}
+                    <span class="text-red-600 font-semibold">Inactive</span>
+                  {% endif %}
+                </td>
+                <td class="px-4 py-2 text-center">
+                  {% if user.is_staff %}
+                    <i class="fa-solid fa-check text-green-500 text-lg"></i>
+                  {% else %}
+                    <i class="fa-solid fa-xmark text-red-500 text-lg"></i>
+                  {% endif %}
+                </td>
+                <td class="px-4 py-2 text-center">
+                  {% if user.is_superuser %}
+                    <i class="fa-solid fa-check text-green-500 text-lg"></i>
+                  {% else %}
+                    <i class="fa-solid fa-xmark text-red-500 text-lg"></i>
+                  {% endif %}
+                </td>
+                <td class="px-4 py-2 flex justify-center gap-3 text-nowrap">
+                  <a href="{% url 'edit_user' user.id %}" class="text-blue-600 hover:text-blue-800" title="Edit">
+                    <i class="fa-solid fa-pen-to-square text-lg"></i>
+                  </a>
+                  <a href="{% url 'delete_user' user.id %}" class="text-red-600 hover:text-red-800" title="Delete">
+                    <i class="fa-solid fa-trash text-lg"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="text-gray-500 mt-4">No users found.</p>
+      {% endif %}
+    {% else %}
+      <p class="text-red-500 mt-4">You do not have permission to view this page.</p>
+    {% endif %}
+  </main>
+</div>
+{% endblock %}
